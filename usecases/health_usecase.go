@@ -8,7 +8,7 @@ type HealthUseCase struct {
 	healthRepository repositories.HealthRepository
 }
 
-func NewUserUseCase(healthRepository repositories.HealthRepository) *HealthUseCase {
+func NewHealthUseCase(healthRepository repositories.HealthRepository) *HealthUseCase {
 	return &HealthUseCase{
 		healthRepository: healthRepository,
 	}

@@ -1,4 +1,4 @@
-package routes
+package echo
 
 import (
 	"net/http"
@@ -6,7 +6,6 @@ import (
 	"github.com/labstack/echo/v4"
 	"hubplanner-proxy-api/domain/models"
 	"hubplanner-proxy-api/domain/models/HubPlanner"
-	"hubplanner-proxy-api/helpers"
 	"hubplanner-proxy-api/usecases"
 )
 
@@ -45,7 +44,7 @@ func (h *HubPlannerHandler) Login(c echo.Context) error {
 }
 
 func (h *HubPlannerHandler) Projects(c echo.Context) error {
-	resourceID := helpers.GetUserID(c)
+	resourceID := GetUserID(c)
 	response, err := h.hubPlannerUseCase.Projects(resourceID)
 	if err != nil {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"error": err.Error()})
@@ -69,7 +68,7 @@ func (h *HubPlannerHandler) TimeEntry(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 
-	timeEntry.Resource = helpers.GetUserID(c)
+	timeEntry.Resource = GetUserID(c)
 	response, err := h.hubPlannerUseCase.TimeEntry(timeEntry)
 	if err != nil {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"error": err.Error()})

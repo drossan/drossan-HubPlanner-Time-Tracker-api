@@ -1,4 +1,4 @@
-package routes
+package echo
 
 import (
 	"github.com/labstack/echo/v4"
@@ -19,7 +19,7 @@ func LoadRoutes(
 	/*******************************************************************************************************************
 	INITIALISING USE CASES
 	*******************************************************************************************************************/
-	healthUseCase := usecases.NewUserUseCase(healthRepo)
+	healthUseCase := usecases.NewHealthUseCase(healthRepo)
 	hubPlannerUseCase := usecases.NewHubPlannerUserUseCase(hubPlannerRepo)
 	/*******************************************************************************************************************
 	INITIALISING HANDLERS

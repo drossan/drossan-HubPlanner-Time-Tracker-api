@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/awslabs/aws-lambda-go-api-proxy/echo"
-	"hubplanner-proxy-api/adapters/routes"
+	"hubplanner-proxy-api/adapters/routes/echo"
 	"hubplanner-proxy-api/config"
 	"hubplanner-proxy-api/infrastructure/router"
 )
@@ -22,7 +22,7 @@ func main() {
 	/*******************************************************************************************************************
 	LOAD ROUTES
 	*******************************************************************************************************************/
-	routes.LoadRoutes(groupAPIRestricted, groupAPIAccessible)
+	echo.LoadRoutes(groupAPIRestricted, groupAPIAccessible)
 
 	/*******************************************************************************************************************
 	LAUNCH LAMBDA

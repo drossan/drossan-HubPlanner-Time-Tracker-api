@@ -5,16 +5,9 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/labstack/echo/v4"
 	"hubplanner-proxy-api/domain/models"
 	"hubplanner-proxy-api/domain/models/HubPlanner"
 )
-
-func GetUserID(c echo.Context) string {
-	token := c.Get("user").(*jwt.Token)
-	claims := token.Claims.(*models.Claim)
-	return claims.UserID
-}
 
 func GenerateJWT(user *HubPlanner.Resource) (string, error) {
 	registeredClaims := jwt.RegisteredClaims{

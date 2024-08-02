@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"hubplanner-proxy-api/adapters/routes"
+	"hubplanner-proxy-api/adapters/routes/echo"
 	"hubplanner-proxy-api/config"
 	"hubplanner-proxy-api/infrastructure/router"
 )
@@ -24,7 +24,7 @@ func main() {
 	/*******************************************************************************************************************
 	LOAD ROUTES
 	*******************************************************************************************************************/
-	routes.LoadRoutes(groupAPIRestricted, groupAPIAccessible)
+	echo.LoadRoutes(groupAPIRestricted, groupAPIAccessible)
 
 	/*******************************************************************************************************************
 	MAP ROUTES

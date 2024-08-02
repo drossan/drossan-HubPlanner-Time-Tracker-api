@@ -1,4 +1,4 @@
-package routes
+package echo
 
 import (
 	"net/http"

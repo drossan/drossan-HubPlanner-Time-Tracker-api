@@ -22,18 +22,19 @@ type AppConfig struct {
 }
 
 func LoadConfig() *Config {
-	// Cargar variables de entorno desde el archivo .env si está en local
-	if err := godotenv.Load(".env"); err != nil {
-		log.Printf("No .env file found")
+	// Intentar cargar variables de entorno desde el archivo .env
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Printf("No .env file found, using environment variables")
 	}
 
 	config := &Config{
 		App: AppConfig{
-			Env: os.Getenv("ENV"),
+			Env: GetEnv("ENV", "development"),
 		},
 		Server: ServerConfig{
-			Address:   os.Getenv("SERVER_ADDRESS"),
-			JWTSecret: os.Getenv("JWT_SECRET"),
+			Address:   GetEnv("SERVER_ADDRESS", ":8080"),
+			JWTSecret: GetEnv("JWT_SECRET", ""),
 		},
 	}
 

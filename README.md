@@ -49,11 +49,13 @@ API_URI_COMPANY=
 API_URL=
 API_TOKEN=
 ```
-> La variable API_URI_COMPANY tiene que hacer referencia a la url que se usa para el login en la propia página de HubPlanner
+
+> La variable API_URI_COMPANY tiene que hacer referencia a la url que se usa para el login en la propia página de
+> HubPlanner
 > La variable API_URL, será la que se nos proporciona en la documentación oficial:
 > - https://hubplanner.com/hub-planner-api/
 > - https://api-docs.hubplanner.com/
-> 
+>
 
 ### Ejecutar la API localmente
 
@@ -66,18 +68,41 @@ go run cmd/server/main.go
 1. Compila el binario para Linux:
 
 ```sh
-GOOS=linux GOARCH=amd64 go build -o main cmd/lambda/main.go
+GOOS=linux GOARCH=amd64 go build -tags lambda.norpc -o bootstrap cmd/lambda/main.go
 ```
 
 2. Crea un archivo ZIP:
 
 ```sh
-zip function.zip main
+zip function.zip bootstrap
 ```
 
 3. Sube el archivo ZIP a AWS Lambda.
 
 4. Configura la función Lambda para usar el manejador Go.
+
+5. Configura las variables de entorno necesarias (por ejemplo JWT_SECRET).
+
+#### Configura API Gateway
+
+##### Crear una API
+
+1. Ve a la consola de API Gateway.
+2. Crea una nueva API REST.
+3. Configura un recurso y método para tu API (por ejemplo, /api/v1/health).
+    1. Hay que configura un recurso por cada unas de las tutas que tenga la API
+   
+##### Configurar el Método
+
+1. Selecciona el recurso y método que has creado (por ejemplo, GET para /api/v1/health).
+
+2. Haz clic en "Integration Request".
+3. Activa el check de "Use Lambda Proxy integration".
+
+##### Desplegar la API
+
+1. En la consola de API Gateway, selecciona "Stages".
+2. Despliega tu API en el stage correspondiente (por ejemplo, dev).
 
 ## Estructura del Proyecto
 

@@ -10,8 +10,11 @@ import (
 	"hubplanner-proxy-api/domain/models"
 )
 
-func accessible(c echo.Context) error {
+func echoAccessible(c echo.Context) error {
 	return c.HTML(http.StatusOK, "<h1>Hello!</h1>")
+}
+func echoStartDomain(c echo.Context) error {
+	return c.HTML(http.StatusOK, "<h1>Are you ready?</h1>")
 }
 
 func NewEchoRouter(JWTSecret string) (*echo.Echo, *echo.Group, *echo.Group, string) {
@@ -21,7 +24,7 @@ func NewEchoRouter(JWTSecret string) (*echo.Echo, *echo.Group, *echo.Group, stri
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"*"},
-		AllowMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost, http.MethodDelete},
+		AllowMethods: []string{http.MethodGet, http.MethodPut, http.MethodPost},
 	}))
 
 	// Middleware
@@ -32,7 +35,8 @@ func NewEchoRouter(JWTSecret string) (*echo.Echo, *echo.Group, *echo.Group, stri
 	e.Static("/", "public")
 
 	// Unauthenticated route
-	e.GET(prefix, accessible)
+	e.GET("/", echoStartDomain)
+	e.GET("/"+prefix, echoAccessible)
 
 	// Accessible group
 	a := e.Group(prefix)
