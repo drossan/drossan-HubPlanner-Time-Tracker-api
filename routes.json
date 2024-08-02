@@ -1,0 +1,47 @@
+[
+  {
+    "method": "GET",
+    "path": "/*",
+    "name": "github.com/labstack/echo/v4.StaticDirectoryHandler.func1"
+  },
+  {
+    "method": "echo_route_not_found",
+    "path": "/api/v1/*",
+    "name": "github.com/labstack/echo/v4.init.func1"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/projects",
+    "name": "hubplanner-proxy-api/adapters/routes.(*HubPlannerHandler).Projects-fm"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/categories",
+    "name": "hubplanner-proxy-api/adapters/routes.(*HubPlannerHandler).Categories-fm"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1",
+    "name": "hubplanner-proxy-api/infrastructure/router.accessible"
+  },
+  {
+    "method": "echo_route_not_found",
+    "path": "/api/v1",
+    "name": "github.com/labstack/echo/v4.init.func1"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/health",
+    "name": "hubplanner-proxy-api/adapters/routes.(*HealthHandler).CheckStatusAPI-fm"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/login",
+    "name": "hubplanner-proxy-api/adapters/routes.(*HubPlannerHandler).Login-fm"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/timeentry",
+    "name": "hubplanner-proxy-api/adapters/routes.(*HubPlannerHandler).TimeEntry-fm"
+  }
+]
