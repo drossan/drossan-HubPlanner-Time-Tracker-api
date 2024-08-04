@@ -30,3 +30,7 @@ func (uc *HubPlannerUseCase) Categories() ([]HubPlanner.Category, error) {
 func (uc *HubPlannerUseCase) TimeEntry(timeEntry *HubPlanner.TimeEntry) (*HubPlanner.TimeEntry, error) {
 	return uc.hubPlannerRepository.TimeEntry(timeEntry)
 }
+
+func (uc *HubPlannerUseCase) TimeEntries(repositoryID string) (*HubPlanner.TimeEntries, error) {
+	return uc.hubPlannerRepository.TimeEntries(repositoryID)
+}

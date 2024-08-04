@@ -27,6 +27,7 @@ func (h *HubPlannerHandler) RegisterHubPlannerRoutes(g *echo.Group) {
 	g.GET("/projects", h.Projects)
 	g.GET("/categories", h.Categories)
 	g.POST("/timeentry", h.TimeEntry)
+	g.GET("/timeentries", h.TimeEntries)
 }
 
 func (h *HubPlannerHandler) Login(c echo.Context) error {
@@ -70,6 +71,21 @@ func (h *HubPlannerHandler) TimeEntry(c echo.Context) error {
 
 	timeEntry.Resource = GetUserID(c)
 	response, err := h.hubPlannerUseCase.TimeEntry(timeEntry)
+	if err != nil {
+		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"error": err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, response)
+}
+
+func (h *HubPlannerHandler) TimeEntries(c echo.Context) error {
+	//timeEntry := new(HubPlanner.TimeEntry)
+	//if err := c.Bind(timeEntry); err != nil {
+	//	return c.JSON(http.StatusBadRequest, err.Error())
+	//}
+	//
+	repositoryID := GetUserID(c)
+	response, err := h.hubPlannerUseCase.TimeEntries(repositoryID)
 	if err != nil {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"error": err.Error()})
 	}

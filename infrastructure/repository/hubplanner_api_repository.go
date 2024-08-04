@@ -277,3 +277,101 @@ func (r *hubPlannerAPIRepository) addTimeEntry(timeEntry *HubPlanner.TimeEntry) 
 	_ = json.Unmarshal(body, &timeEntry)
 	return timeEntry, nil
 }
+
+func (r *hubPlannerAPIRepository) TimeEntries(resourceID string) (*HubPlanner.TimeEntries, error) {
+	weekRanges := helpers.GetWeekRanges()
+	fmt.Println(weekRanges)
+
+	timeEntries := HubPlanner.TimeEntries{}
+
+	for _, weekRange := range weekRanges {
+		// Obtener la fecha de inicio y fin de la semana
+		weekDateStart := weekRange.Dates[0]
+		weekDateEnd := weekRange.Dates[len(weekRange.Dates)-1]
+
+		timeEntriesWeek := HubPlanner.TimeEntriesWeek{
+			Week: weekRange.Week,
+		}
+
+		// Crear un mapa para agrupar las entradas por día
+		dailyEntries := make(map[string][]HubPlanner.TimeEntryReduce)
+
+		page := 0
+		for {
+			entries, err := r.recoveryTimeEntriesByWeek(resourceID, weekDateStart, weekDateEnd, fmt.Sprintf("%d", page))
+			if err != nil || len(entries) == 0 {
+				break
+			}
+
+			// Filtrar y agrupar entradas por día
+			for _, entry := range entries {
+				if entry.Minutes > 0 {
+					dailyEntries[entry.Date] = append(dailyEntries[entry.Date], entry)
+				}
+			}
+
+			page++
+		}
+
+		// Crear las estructuras de los días de la semana con las entradas agrupadas
+		for day, entries := range dailyEntries {
+			timeEntriesDayOfWeek := HubPlanner.TimeEntriesDayOfWeek{
+				DayOfWeek: day,
+				Items:     entries,
+			}
+
+			// Agregar total de tiempo por día de la semana
+			timeEntriesDayOfWeek.TotalTime = helpers.CalculateTotalTime(timeEntriesDayOfWeek.Items)
+			timeEntriesWeek.Items = append(timeEntriesWeek.Items, timeEntriesDayOfWeek)
+		}
+
+		// Agregar total de tiempo por semana
+		timeEntriesWeek.TotalTime = helpers.CalculateTotalTimeForWeek(timeEntriesWeek.Items)
+		timeEntries.Items = append(timeEntries.Items, timeEntriesWeek)
+	}
+
+	timeEntries.TotalItems = len(timeEntries.Items)
+
+	return &timeEntries, nil
+}
+
+func (r *hubPlannerAPIRepository) recoveryTimeEntriesByWeek(resourceID, weekDateStart, weekDateEnd, page string) ([]HubPlanner.TimeEntryReduce, error) {
+	var timeEntries []HubPlanner.TimeEntryReduce
+
+	url := os.Getenv("API_URL") + "/timeentry/search?page=" + page + "&limit=100"
+	method := "POST"
+
+	data := map[string]interface{}{
+		"resource": resourceID,
+		"date": map[string]interface{}{
+			"$gte": weekDateStart,
+			"$lte": weekDateEnd,
+		},
+	}
+	payload, _ := json.Marshal(data)
+
+	client := &http.Client{}
+	req, err := http.NewRequest(method, url, bytes.NewBuffer(payload))
+
+	if err != nil {
+		return timeEntries, err
+	}
+	req.Header.Add("Authorization", os.Getenv("API_TOKEN"))
+	req.Header.Add("Content-Type", "application/json")
+
+	res, err := client.Do(req)
+	if err != nil {
+		return timeEntries, err
+	}
+	defer func(Body io.ReadCloser) {
+		_ = Body.Close()
+	}(res.Body)
+
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		return timeEntries, err
+	}
+
+	_ = json.Unmarshal(body, &timeEntries)
+	return timeEntries, nil
+}

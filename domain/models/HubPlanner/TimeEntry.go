@@ -20,3 +20,30 @@ type TimeEntry struct {
 	CategoryName       string `json:"categoryName,omitempty"`
 	Billable           string `json:"billable,omitempty"`
 }
+
+type TimeEntryReduce struct {
+	ID                 string `json:"_id,omitempty"`
+	Project            string `json:"project"`
+	ProjectName        string `json:"projectName,omitempty"`
+	Date               string `json:"date"`
+	Minutes            int    `json:"minutes"`
+	CategoryTemplateId string `json:"categoryTemplateId,omitempty"`
+	CategoryName       string `json:"categoryName,omitempty"`
+}
+
+type TimeEntriesDayOfWeek struct {
+	TotalTime string            `json:"total_time"`
+	DayOfWeek string            `json:"day_of_week"`
+	Items     []TimeEntryReduce `json:"items"`
+}
+
+type TimeEntriesWeek struct {
+	TotalTime string                 `json:"total_time"`
+	Week      string                 `json:"week"`
+	Items     []TimeEntriesDayOfWeek `json:"items,omitempty"`
+}
+
+type TimeEntries struct {
+	TotalItems int               `json:"totalItems"`
+	Items      []TimeEntriesWeek `json:"items"`
+}
