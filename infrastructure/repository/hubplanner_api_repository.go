@@ -113,7 +113,36 @@ func (r *hubPlannerAPIRepository) Projects(resourceID string) ([]HubPlanner.Proj
 
 	_ = json.Unmarshal(bodyBytes, &projects)
 
+	events, err := r.events()
+	if err != nil {
+		return projects, err
+	}
+
+	projects = append(projects, events...)
+
 	return projects, nil
+}
+
+func (r *hubPlannerAPIRepository) events() ([]HubPlanner.Project, error) {
+	var events []HubPlanner.Project
+
+	url := os.Getenv("API_URL") + "/event/search?sort=-createdDate&limit=1000"
+	method := "POST"
+
+	bodyBytes, err := helpers.MakeHTTPRequest(
+		method,
+		url,
+		os.Getenv("API_TOKEN"),
+		"application/json",
+		nil,
+	)
+
+	if err != nil {
+		return events, err
+	}
+
+	_ = json.Unmarshal(bodyBytes, &events)
+	return events, nil
 }
 
 func (r *hubPlannerAPIRepository) Categories() ([]HubPlanner.Category, error) {
