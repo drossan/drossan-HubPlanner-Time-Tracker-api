@@ -33,7 +33,11 @@ func GetWeekRanges() []WeekRange {
 
 		var dates []string
 		for j := 0; j < 7; j++ {
-			dates = append(dates, weekStart.AddDate(0, 0, j).Format(dateFormat))
+			date := weekStart.AddDate(0, 0, j)
+			if date.After(currentDate) {
+				break
+			}
+			dates = append(dates, date.Format(dateFormat))
 		}
 		weekRanges = append(weekRanges, WeekRange{Week: weekLabel, Dates: dates})
 	}
