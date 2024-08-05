@@ -71,36 +71,26 @@ func (r *hubPlannerAPIRepository) recoveryUser(username string) ([]HubPlanner.Re
 		}
 	}`, username)
 
-	client := &http.Client{}
-	req, err := http.NewRequest(method, url, strings.NewReader(payload))
+	bodyBytes, err := helpers.MakeHTTPRequest(
+		method,
+		url,
+		os.Getenv("API_TOKEN"),
+		"application/json",
+		strings.NewReader(payload),
+	)
 
 	if err != nil {
 		return resources, err
 	}
-	req.Header.Add("Authorization", os.Getenv("API_TOKEN"))
-	req.Header.Add("Content-Type", "application/json")
 
-	res, err := client.Do(req)
-	if err != nil {
-		return resources, err
-	}
-	defer func(Body io.ReadCloser) {
-		_ = Body.Close()
-	}(res.Body)
-
-	body, err := io.ReadAll(res.Body)
-	if err != nil {
-		return resources, err
-	}
-
-	_ = json.Unmarshal(body, &resources)
+	_ = json.Unmarshal(bodyBytes, &resources)
 	return resources, nil
 }
 
 func (r *hubPlannerAPIRepository) Projects(resourceID string) ([]HubPlanner.Project, error) {
 	var projects []HubPlanner.Project
 
-	url := os.Getenv("API_URL") + "/project/search?sort=-createdDate"
+	url := os.Getenv("API_URL") + "/project/search?sort=-createdDate&limit=1000"
 	method := "POST"
 
 	payload := fmt.Sprintf(`{
@@ -109,29 +99,20 @@ func (r *hubPlannerAPIRepository) Projects(resourceID string) ([]HubPlanner.Proj
 		}
 	}`, resourceID)
 
-	client := &http.Client{}
-	req, err := http.NewRequest(method, url, strings.NewReader(payload))
+	bodyBytes, err := helpers.MakeHTTPRequest(
+		method,
+		url,
+		os.Getenv("API_TOKEN"),
+		"application/json",
+		strings.NewReader(payload),
+	)
 
 	if err != nil {
 		return projects, err
 	}
-	req.Header.Add("Authorization", os.Getenv("API_TOKEN"))
-	req.Header.Add("Content-Type", "application/json")
 
-	res, err := client.Do(req)
-	if err != nil {
-		return projects, err
-	}
-	defer func(Body io.ReadCloser) {
-		_ = Body.Close()
-	}(res.Body)
+	_ = json.Unmarshal(bodyBytes, &projects)
 
-	body, err := io.ReadAll(res.Body)
-	if err != nil {
-		return projects, err
-	}
-
-	_ = json.Unmarshal(body, &projects)
 	return projects, nil
 }
 
@@ -141,29 +122,18 @@ func (r *hubPlannerAPIRepository) Categories() ([]HubPlanner.Category, error) {
 	url := os.Getenv("API_URL") + "/categories"
 	method := "GET"
 
-	client := &http.Client{}
-	req, err := http.NewRequest(method, url, nil)
-
-	if err != nil {
-		return categories, err
-	}
-	req.Header.Add("Authorization", os.Getenv("API_TOKEN"))
-	req.Header.Add("Content-Type", "application/json")
-
-	res, err := client.Do(req)
-	if err != nil {
-		return categories, err
-	}
-	defer func(Body io.ReadCloser) {
-		_ = Body.Close()
-	}(res.Body)
-
-	body, err := io.ReadAll(res.Body)
+	bodyBytes, err := helpers.MakeHTTPRequest(
+		method,
+		url,
+		os.Getenv("API_TOKEN"),
+		"application/json",
+		nil,
+	)
 	if err != nil {
 		return categories, err
 	}
 
-	_ = json.Unmarshal(body, &categories)
+	_ = json.Unmarshal(bodyBytes, &categories)
 	return categories, nil
 }
 
