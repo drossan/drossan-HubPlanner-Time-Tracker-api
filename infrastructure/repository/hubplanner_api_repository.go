@@ -189,6 +189,7 @@ func (r *hubPlannerAPIRepository) TimeEntry(timeEntry *HubPlanner.TimeEntry) (*H
 		}
 	}
 
+	timeEntry.Status = "UNSUBMITTED"
 	timeEntry, err = r.addTimeEntry(timeEntry)
 	if err != nil {
 		return timeEntry, err
