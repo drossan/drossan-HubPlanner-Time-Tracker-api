@@ -25,6 +25,8 @@ type TimeEntryReduce struct {
 	ID                 string `json:"_id,omitempty"`
 	Project            string `json:"project"`
 	ProjectName        string `json:"projectName,omitempty"`
+	ProjectType        string `json:"projectType,omitempty"`
+	Status             string `json:"status,omitempty"`
 	Date               string `json:"date"`
 	Minutes            int    `json:"minutes"`
 	CategoryTemplateId string `json:"categoryTemplateId,omitempty"`
