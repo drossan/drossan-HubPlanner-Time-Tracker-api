@@ -3,6 +3,7 @@ package repository
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -236,6 +237,27 @@ func (r *hubPlannerAPIRepository) recoveryTimeEntriesByDate(resourceID, date str
 	return timeEntries, nil
 }
 
+func (r *hubPlannerAPIRepository) recoveryTimeEntriesByID(timeEntryID string) (*HubPlanner.TimeEntry, error) {
+	var timeEntry HubPlanner.TimeEntry
+
+	url := os.Getenv("API_URL") + "/timeentry/" + timeEntryID
+	method := "GET"
+
+	bodyBytes, err := helpers.MakeHTTPRequest(
+		method,
+		url,
+		os.Getenv("API_TOKEN"),
+		"application/json",
+		nil,
+	)
+	if err != nil {
+		return &timeEntry, err
+	}
+
+	_ = json.Unmarshal(bodyBytes, &timeEntry)
+	return &timeEntry, nil
+}
+
 func (r *hubPlannerAPIRepository) addTimeEntry(timeEntry *HubPlanner.TimeEntry) (*HubPlanner.TimeEntry, error) {
 	url := os.Getenv("API_URL") + "/timeentry"
 	method := "POST"
@@ -374,4 +396,23 @@ func (r *hubPlannerAPIRepository) recoveryTimeEntriesByWeek(resourceID, weekDate
 
 	_ = json.Unmarshal(body, &timeEntries)
 	return timeEntries, nil
+}
+
+func (r *hubPlannerAPIRepository) TimeEntrySubmit(timeEntryID, resourceID string) (*HubPlanner.TimeEntry, error) {
+	timeEntry, err := r.recoveryTimeEntriesByID(timeEntryID)
+
+	if timeEntry.Resource != resourceID {
+		if err != nil {
+			return nil, errors.New("la entrada no corresponde al usuario")
+		}
+	}
+
+	timeEntry.Status = "SUBMITTED"
+	timeEntry, err = r.addTimeEntry(timeEntry)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return timeEntry, nil
 }

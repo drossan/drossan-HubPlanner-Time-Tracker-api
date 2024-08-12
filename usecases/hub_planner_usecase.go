@@ -34,3 +34,7 @@ func (uc *HubPlannerUseCase) TimeEntry(timeEntry *HubPlanner.TimeEntry) (*HubPla
 func (uc *HubPlannerUseCase) TimeEntries(repositoryID string) (*HubPlanner.TimeEntries, error) {
 	return uc.hubPlannerRepository.TimeEntries(repositoryID)
 }
+
+func (uc *HubPlannerUseCase) TimeEntrySubmit(timeEntryID, resourceID string) (*HubPlanner.TimeEntry, error) {
+	return uc.hubPlannerRepository.TimeEntrySubmit(timeEntryID, resourceID)
+}
