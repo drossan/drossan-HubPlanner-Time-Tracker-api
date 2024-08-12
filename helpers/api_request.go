@@ -13,6 +13,7 @@ func MakeHTTPRequest(method, url, apiToken, contentType string, body io.Reader) 
 	}
 	req.Header.Add("Authorization", apiToken)
 	req.Header.Add("Content-Type", contentType)
+	req.Header.Add("User-Agent", "Secuoyas Experiences - Time Tracking (daniel.rossello@secuoyas.com)")
 
 	res, err := client.Do(req)
 	if err != nil {

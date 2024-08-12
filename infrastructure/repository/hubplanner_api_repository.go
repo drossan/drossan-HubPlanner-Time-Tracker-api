@@ -24,20 +24,30 @@ func NewHubPlannerConnectionRepository() repositories.HubPlannerRepository {
 func (r *hubPlannerAPIRepository) Login(email, password string) (HubPlanner.LoginResponse, error) {
 	var result HubPlanner.LoginResponse
 
+	// Preparar los datos para la solicitud
 	data := map[string]string{
 		"userName": email,
 		"password": password,
 	}
 	jsonData, _ := json.Marshal(data)
-	resp, err := http.Post(os.Getenv("API_URI_COMPANY")+"/login", "application/json", bytes.NewBuffer(jsonData))
+
+	req, err := http.NewRequest("POST", os.Getenv("API_URI_COMPANY")+"/login", bytes.NewBuffer(jsonData))
+	if err != nil {
+		return result, err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Add("User-Agent", "Secuoyas Experiences - Time Tracking (daniel.rossello@secuoyas.com)")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
 	if err != nil {
 		return result, err
 	}
 	defer func(Body io.ReadCloser) {
 		_ = Body.Close()
 	}(resp.Body)
-	body, _ := io.ReadAll(resp.Body)
 
+	body, _ := io.ReadAll(resp.Body)
 	_ = json.Unmarshal(body, &result)
 
 	if result.Status {
@@ -48,13 +58,11 @@ func (r *hubPlannerAPIRepository) Login(email, password string) (HubPlanner.Logi
 
 		if len(resources) > 0 {
 			token, err := helpers.GenerateJWT(&resources[0])
-
 			result.Token = token
 			if err != nil {
 				return result, err
 			}
 		}
-
 	}
 
 	return result, nil
@@ -219,6 +227,7 @@ func (r *hubPlannerAPIRepository) recoveryTimeEntriesByDate(resourceID, date str
 	}
 	req.Header.Add("Authorization", os.Getenv("API_TOKEN"))
 	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("User-Agent", "Secuoyas Experiences - Time Tracking (daniel.rossello@secuoyas.com)")
 
 	res, err := client.Do(req)
 	if err != nil {
@@ -282,6 +291,7 @@ func (r *hubPlannerAPIRepository) addTimeEntry(timeEntry *HubPlanner.TimeEntry) 
 	}
 	req.Header.Add("Authorization", os.Getenv("API_TOKEN"))
 	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("User-Agent", "Secuoyas Experiences - Time Tracking (daniel.rossello@secuoyas.com)")
 
 	res, err := client.Do(req)
 	if err != nil {
@@ -380,6 +390,7 @@ func (r *hubPlannerAPIRepository) recoveryTimeEntriesByWeek(resourceID, weekDate
 	}
 	req.Header.Add("Authorization", os.Getenv("API_TOKEN"))
 	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("User-Agent", "Secuoyas Experiences - Time Tracking (daniel.rossello@secuoyas.com)")
 
 	res, err := client.Do(req)
 	if err != nil {
