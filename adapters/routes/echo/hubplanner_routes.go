@@ -27,7 +27,7 @@ func (h *HubPlannerHandler) RegisterHubPlannerRoutes(g *echo.Group) {
 	g.GET("/projects", h.Projects)
 	g.GET("/categories", h.Categories)
 	g.POST("/timeentry", h.TimeEntry)
-	g.POST("/timeentry/submit/:timeEntryID", h.TimeEntrySubmit)
+	g.GET("/timeentry/submit/:timeEntryID", h.TimeEntrySubmit)
 	g.GET("/timeentries", h.TimeEntries)
 }
 
