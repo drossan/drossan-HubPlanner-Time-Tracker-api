@@ -353,12 +353,12 @@ func (r *hubPlannerAPIRepository) TimeEntries(resourceID string) (*HubPlanner.Ti
 			}
 
 			// Agregar total de tiempo por día de la semana
-			timeEntriesDayOfWeek.TotalTime = helpers.CalculateTotalTime(timeEntriesDayOfWeek.Items)
+			timeEntriesDayOfWeek.TotalTime, timeEntriesDayOfWeek.TotalTimeInMinutes = helpers.CalculateTotalTime(timeEntriesDayOfWeek.Items)
 			timeEntriesWeek.Items = append(timeEntriesWeek.Items, timeEntriesDayOfWeek)
 		}
 
 		// Agregar total de tiempo por semana
-		timeEntriesWeek.TotalTime = helpers.CalculateTotalTimeForWeek(timeEntriesWeek.Items)
+		timeEntriesWeek.TotalTime, timeEntriesWeek.TotalTimeInMinutes = helpers.CalculateTotalTimeForWeek(timeEntriesWeek.Items)
 		timeEntries.Items = append(timeEntries.Items, timeEntriesWeek)
 	}
 

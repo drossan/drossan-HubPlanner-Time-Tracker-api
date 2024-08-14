@@ -34,15 +34,17 @@ type TimeEntryReduce struct {
 }
 
 type TimeEntriesDayOfWeek struct {
-	TotalTime string            `json:"total_time"`
-	DayOfWeek string            `json:"day_of_week"`
-	Items     []TimeEntryReduce `json:"items"`
+	TotalTime          string            `json:"total_time"`
+	TotalTimeInMinutes int               `json:"total_time_in_minutes"`
+	DayOfWeek          string            `json:"day_of_week"`
+	Items              []TimeEntryReduce `json:"items"`
 }
 
 type TimeEntriesWeek struct {
-	TotalTime string                 `json:"total_time"`
-	Week      string                 `json:"week"`
-	Items     []TimeEntriesDayOfWeek `json:"items,omitempty"`
+	TotalTime          string                 `json:"total_time"`
+	TotalTimeInMinutes int                    `json:"total_time_in_minutes"`
+	Week               string                 `json:"week"`
+	Items              []TimeEntriesDayOfWeek `json:"items,omitempty"`
 }
 
 type TimeEntries struct {
