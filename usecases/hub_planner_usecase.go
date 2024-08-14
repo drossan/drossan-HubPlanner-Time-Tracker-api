@@ -15,10 +15,6 @@ func NewHubPlannerUserUseCase(hubPlannerRepository repositories.HubPlannerReposi
 	}
 }
 
-func (uc *HubPlannerUseCase) Login(email, password string) (HubPlanner.LoginResponse, error) {
-	return uc.hubPlannerRepository.Login(email, password)
-}
-
 func (uc *HubPlannerUseCase) Projects(resourceID string) ([]HubPlanner.Project, error) {
 	return uc.hubPlannerRepository.Projects(resourceID)
 }

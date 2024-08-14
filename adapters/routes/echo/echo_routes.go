@@ -14,24 +14,27 @@ func LoadRoutes(
 	CERATE INSTANCES OF REPOSITORIES
 	*******************************************************************************************************************/
 	healthRepo := repository.NewHealthConnectionRepository()
+	loginRepo := repository.NewLoginConnectionRepository()
 	hubPlannerRepo := repository.NewHubPlannerConnectionRepository()
 
 	/*******************************************************************************************************************
 	INITIALISING USE CASES
 	*******************************************************************************************************************/
 	healthUseCase := usecases.NewHealthUseCase(healthRepo)
+	loginUseCase := usecases.NewLoginUserUseCase(loginRepo)
 	hubPlannerUseCase := usecases.NewHubPlannerUserUseCase(hubPlannerRepo)
 	/*******************************************************************************************************************
 	INITIALISING HANDLERS
 	*******************************************************************************************************************/
 	healthHandler := NewHealthHandler(healthUseCase)
+	loginHandler := NewLoginHandler(loginUseCase)
 	hubPlannerHandler := NewHubPlannerHandler(hubPlannerUseCase)
 
 	/*******************************************************************************************************************
 	REGISTER PUBLIC ROUTES
 	*******************************************************************************************************************/
 	healthHandler.RegisterRoutes(groupAPIAccessible)
-	hubPlannerHandler.RegisterAuthHubPlannerRoutes(groupAPIAccessible)
+	loginHandler.RegisterAuthLoginRoutes(groupAPIAccessible)
 
 	/*******************************************************************************************************************
 	REGISTER RESTRICTED ROUTES

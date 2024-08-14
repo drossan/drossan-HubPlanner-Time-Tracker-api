@@ -5,7 +5,6 @@ import (
 )
 
 type HubPlannerRepository interface {
-	Login(email, password string) (HubPlanner.LoginResponse, error)
 	Projects(resourceID string) ([]HubPlanner.Project, error)
 	Categories() ([]HubPlanner.Category, error)
 	TimeEntry(timeEntry *HubPlanner.TimeEntry) (*HubPlanner.TimeEntry, error)
