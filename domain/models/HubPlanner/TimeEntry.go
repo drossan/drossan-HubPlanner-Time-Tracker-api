@@ -31,6 +31,7 @@ type TimeEntryReduce struct {
 	Minutes            int    `json:"minutes"`
 	CategoryTemplateId string `json:"categoryTemplateId,omitempty"`
 	CategoryName       string `json:"categoryName,omitempty"`
+	Note               string `json:"note,omitempty"`
 }
 
 type TimeEntriesDayOfWeek struct {
