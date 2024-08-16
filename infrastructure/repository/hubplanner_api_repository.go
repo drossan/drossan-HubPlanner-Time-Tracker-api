@@ -121,10 +121,8 @@ func (r *hubPlannerAPIRepository) TimeEntry(timeEntry *HubPlanner.TimeEntry) (*H
 			timeEntry.CategoryName = entry.CategoryName
 			timeEntry.Billable = entry.Billable
 
-			if timeEntry.Note != "" {
+			if entry.Note != "" {
 				timeEntry.Note = entry.Note + "\n" + timeEntry.Note
-			} else {
-				timeEntry.Note = entry.Note
 			}
 		}
 	}
