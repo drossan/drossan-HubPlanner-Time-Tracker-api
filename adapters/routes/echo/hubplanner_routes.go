@@ -27,8 +27,7 @@ func (h *HubPlannerHandler) RegisterHubPlannerRoutes(g *echo.Group) {
 }
 
 func (h *HubPlannerHandler) Projects(c echo.Context) error {
-	resourceID := GetUserID(c)
-	response, err := h.hubPlannerUseCase.Projects(resourceID)
+	response, err := h.hubPlannerUseCase.Projects()
 	if err != nil {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"error": err.Error()})
 	}

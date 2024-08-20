@@ -5,7 +5,7 @@ import (
 )
 
 type HubPlannerRepository interface {
-	Projects(resourceID string) ([]HubPlanner.Project, error)
+	Projects() ([]HubPlanner.Project, error)
 	Categories() ([]HubPlanner.Category, error)
 	TimeEntry(timeEntry *HubPlanner.TimeEntry) (*HubPlanner.TimeEntry, error)
 	TimeEntrySubmit(timeEntryID, resourceID string) (*HubPlanner.TimeEntry, error)

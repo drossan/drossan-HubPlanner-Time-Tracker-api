@@ -15,8 +15,8 @@ func NewHubPlannerUserUseCase(hubPlannerRepository repositories.HubPlannerReposi
 	}
 }
 
-func (uc *HubPlannerUseCase) Projects(resourceID string) ([]HubPlanner.Project, error) {
-	return uc.hubPlannerRepository.Projects(resourceID)
+func (uc *HubPlannerUseCase) Projects() ([]HubPlanner.Project, error) {
+	return uc.hubPlannerRepository.Projects()
 }
 
 func (uc *HubPlannerUseCase) Categories() ([]HubPlanner.Category, error) {

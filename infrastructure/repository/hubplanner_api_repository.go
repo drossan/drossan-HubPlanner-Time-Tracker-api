@@ -21,17 +21,17 @@ func NewHubPlannerConnectionRepository() repositories.HubPlannerRepository {
 	return &hubPlannerAPIRepository{}
 }
 
-func (r *hubPlannerAPIRepository) Projects(resourceID string) ([]HubPlanner.Project, error) {
+func (r *hubPlannerAPIRepository) Projects() ([]HubPlanner.Project, error) {
 	var projects []HubPlanner.Project
 
 	url := os.Getenv("API_URL") + "/project/search?sort=-createdDate&limit=1000"
 	method := "POST"
 
 	payload := fmt.Sprintf(`{
-		"resources": {
+		"status": {
 			"$in": ["%s"]
 		}
-	}`, resourceID)
+	}`, "STATUS_ACTIVE")
 
 	bodyBytes, err := helpers.MakeHTTPRequest(
 		method,
