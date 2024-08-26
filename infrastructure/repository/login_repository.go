@@ -56,11 +56,18 @@ func (r *oauthRepository) Login(email, password string) (HubPlanner.LoginRespons
 		}
 
 		if len(resources) > 0 {
-			token, err := helpers.GenerateJWT(&resources[0])
-			result.Token = token
+			accessToken, err := helpers.GenerateJWT(&resources[0])
 			if err != nil {
 				return result, err
 			}
+
+			refreshToken, err := helpers.GenerateRefreshToken(resources[0].ID)
+			if err != nil {
+				return result, err
+			}
+
+			result.Token = accessToken
+			result.RefreshToken = refreshToken
 		}
 	}
 
@@ -97,12 +104,19 @@ func (r *oauthRepository) LoginGoogle(idToken string) (models.OAuthResponse, err
 		}
 
 		if len(resources) > 0 {
-			token, err := helpers.GenerateJWT(&resources[0])
-			result.Token = token
-			result.UserEmail = userInfo.Email
+			accessToken, err := helpers.GenerateJWT(&resources[0])
 			if err != nil {
 				return result, err
 			}
+
+			refreshToken, err := helpers.GenerateRefreshToken(resources[0].ID)
+			if err != nil {
+				return result, err
+			}
+
+			result.Token = accessToken
+			result.RefreshToken = refreshToken
+			result.UserEmail = userInfo.Email
 		}
 	}
 

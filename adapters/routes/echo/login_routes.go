@@ -21,6 +21,7 @@ func NewLoginHandler(uc *usecases.LoginUseCase) *LoginHandler {
 func (h *LoginHandler) RegisterAuthLoginRoutes(g *echo.Group) {
 	g.POST("/login", h.Login)
 	g.GET("/login-google/:id-token", h.LoginGoogle)
+	g.GET("/refresh-token/:refresh-token", h.RefreshToken)
 }
 
 func (h *LoginHandler) Login(c echo.Context) error {
@@ -42,6 +43,19 @@ func (h *LoginHandler) LoginGoogle(c echo.Context) error {
 	response, err := h.hubPlannerUseCase.LoginGoogle(idToken)
 	if err != nil {
 		return c.JSON(http.StatusUnauthorized, map[string]interface{}{"error": err.Error()})
+	}
+
+	return c.JSON(http.StatusOK, response)
+}
+
+func (h *LoginHandler) RefreshToken(c echo.Context) error {
+	refreshToken := c.Param("refresh-token")
+
+	response, err := h.hubPlannerUseCase.RefreshAccessToken(refreshToken)
+	if err != nil {
+		return c.JSON(http.StatusUnauthorized, map[string]string{
+			"message": "Invalid or expired refresh token",
+		})
 	}
 
 	return c.JSON(http.StatusOK, response)

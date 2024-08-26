@@ -19,9 +19,10 @@ type GoogleTokenInfo struct {
 }
 
 type OAuthResponse struct {
-	Message   string `json:"message,omitempty"`
-	Error     string `json:"error,omitempty"`
-	Code      string `json:"code,omitempty"`
-	Token     string `json:"token,omitempty"`
-	UserEmail string `json:"userEmail,omitempty"`
+	Message      string `json:"message,omitempty"`
+	Error        string `json:"error,omitempty"`
+	Code         string `json:"code,omitempty"`
+	Token        string `json:"token,omitempty"`
+	RefreshToken string `json:"refresh_token,omitempty"`
+	UserEmail    string `json:"userEmail,omitempty"`
 }
