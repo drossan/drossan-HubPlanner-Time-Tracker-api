@@ -28,7 +28,7 @@ func GenerateJWT(user *HubPlanner.Resource) (string, error) {
 func GenerateRefreshToken(userID string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"user_id": userID,
-		"exp":     time.Now().Add(time.Hour * 24 * 7).Unix(),
+		"exp":     time.Now().Add(time.Hour * 24 * 30).Unix(),
 	})
 
 	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
