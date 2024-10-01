@@ -44,7 +44,7 @@ func (uc *LoginUseCase) RefreshAccessToken(refreshToken string) (HubPlanner.Logi
 
 	userID := claims["user_id"].(string)
 
-	newAccessToken, err := helpers.GenerateJWT(&HubPlanner.Resource{ID: userID})
+	newAccessToken, err := helpers.GenerateRefreshToken(&HubPlanner.Resource{ID: userID})
 	if err != nil {
 		return HubPlanner.LoginResponse{}, err
 	}

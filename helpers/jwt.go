@@ -25,18 +25,19 @@ func GenerateJWT(user *HubPlanner.Resource) (string, error) {
 	return token.SignedString([]byte(os.Getenv("JWT_SECRET")))
 }
 
-func GenerateRefreshToken(userID string) (string, error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"user_id": userID,
-		"exp":     time.Now().Add(time.Hour * 24 * 30).Unix(),
-	})
-
-	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
-	if err != nil {
-		return "", err
+func GenerateRefreshToken(user *HubPlanner.Resource) (string, error) {
+	registeredClaims := jwt.RegisteredClaims{
+		ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24 * 30)),
+		Issuer:    "Hub Planner Proxy API - Generate by Secuoyas Experience",
 	}
 
-	return tokenString, nil
+	claims := models.Claim{
+		UserID:           user.ID,
+		Username:         user.Email,
+		RegisteredClaims: registeredClaims,
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString([]byte(os.Getenv("JWT_SECRET")))
 }
 
 func ValidateToken(tokenString string) (*jwt.Token, error) {
