@@ -32,7 +32,7 @@ trabajo.
 ### Clonar el repositorio
 
 ```sh
-git clone git@github.com:Secuoyas-Experience/HubPlanner-Time-Tracker-api-go.git
+git clone git@github.com:drossan/drossan-HubPlanner-Time-Tracker-api.git
 cd hubplanner-proxy-api
 ```
 
@@ -53,9 +53,9 @@ API_TOKEN=
 > La variable API_URI_COMPANY tiene que hacer referencia a la url que se usa para el login en la propia página de
 > HubPlanner
 > La variable API_URL, será la que se nos proporciona en la documentación oficial:
+>
 > - https://hubplanner.com/hub-planner-api/
 > - https://api-docs.hubplanner.com/
->
 
 ### Ejecutar la API localmente
 
@@ -90,8 +90,8 @@ zip function.zip bootstrap
 1. Ve a la consola de API Gateway.
 2. Crea una nueva API REST.
 3. Configura un recurso y método para tu API (por ejemplo, /api/v1/health).
-    1. Hay que configura un recurso por cada unas de las tutas que tenga la API
-   
+   1. Hay que configura un recurso por cada unas de las tutas que tenga la API
+
 ##### Configurar el Método
 
 1. Selecciona el recurso y método que has creado (por ejemplo, GET para /api/v1/health).
